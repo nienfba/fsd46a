@@ -106,3 +106,107 @@ erDiagram
     photo ||--o{ photo_tag : has
     tag ||--o{ photo_tag : contains
 ```
+
+
+### Notre ErDiagramm
+```mermaid
+---
+title: E-Commerce
+---
+erDiagram
+    User {
+        int id PK
+        string(255) email
+        string password
+        array role
+        datetime createdAt
+        datetime modifiedAt
+    }
+    Customer {
+        int id PK
+        string(100) lastname
+        string(100) firstname
+        string(100) phone
+        datetime birthdateAt
+    }
+    CustomerAddress {
+        int id PK
+        string(100) name
+        string(255) line1
+        string(255) line2
+        string(50) zipCode
+        string(100) city
+        string(100) country
+        array type
+    }
+    Product {
+        int id PK
+        string(100) name
+        text description
+        float price
+        int stock
+        string(100) slug
+        datetime createdAt
+        datetime modifiedAt
+    }
+    Tva {
+        int id PK
+        string(100) name
+        float value
+        datetime createdAt
+        datetime modifiedAt
+    }
+    ProductImage {
+        int id PK
+        string(100) name
+        string(255) file
+        datetime createdAt
+        datetime modifiedAt
+    }
+    Category {
+        int id PK
+        string(100) name
+        text description
+        string(100) slug
+        datetime createdAt
+        datetime modifiedAt
+    }
+    Review {
+        int id PK
+        text content
+        int review
+        datetime createdAt
+        datetime modifiedAt
+    }
+    Order {
+        int id PK
+        string(255) orderNumber
+        string(100) status
+        datetime createdAt
+        datetime shippedAt
+    }
+    OrderLine {
+        int id PK
+        float price
+        float tva
+        int qty
+    }
+    Payment {
+        int id PK
+        string(255) type
+        float amount
+        datetime createdAt
+    }
+
+    Review }|--|| Customer : has
+    Review }|--|| Product : has
+    Product ||--|{ ProductImage : has
+    Product }o--|| Tva : taxed
+    Category }|--o{ Product : inside
+    User ||--o| Customer : is
+    Customer ||--}| CustomerAddress : has
+    Order ||--}| OrderLine : inside
+    Payment }o--||Order : isPaid
+    Customer ||--o{ Order : has
+    OrderLine }|--|| Product : inside
+```
