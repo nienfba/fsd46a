@@ -198,15 +198,40 @@ erDiagram
         datetime createdAt
     }
 
-    Review }|--|| Customer : has
-    Review }|--|| Product : has
+    Review }o--|| Customer : has
+    Review }o--|| Product : has
     Product ||--|{ ProductImage : has
     Product }o--|| Tva : taxed
     Category }|--o{ Product : inside
     User ||--o| Customer : is
     Customer ||--}| CustomerAddress : has
     Order ||--}| OrderLine : inside
-    Payment }o--||Order : isPaid
+    Payment }o--|| Order : isPaid
     Customer ||--o{ Order : has
     OrderLine }|--|| Product : inside
+```
+
+
+## Installation
+
+Cloner le github
+
+
+```bash 
+
+    php bin/console d:d:c
+
+ 
+    # Fixtures
+    php bin/console 
+
+```
+
+## Commande Symfony utilisées
+
+```bash
+
+    # Creation d'entité
+    php bin/console make:entity
+
 ```

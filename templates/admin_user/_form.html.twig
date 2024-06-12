@@ -1,0 +1,8 @@
+{% trans_default_domain 'admin' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn" type="submit" id="save">{% if edit %}{{ 'user.button.edit'|trans }}{% else %}{{ 'user.button.new'|trans }}{% endif %}</button>
+{{ form_end(form) }}

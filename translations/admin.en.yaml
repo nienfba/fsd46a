@@ -1,0 +1,7 @@
+user:
+  title:
+    edit: Edit user
+    new: Add new user
+  button:
+    edit: Update
+    new: Add

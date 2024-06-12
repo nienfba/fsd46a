@@ -1,0 +1,9 @@
+user:
+  title:
+    edit: Créer un utilisateur
+    new: Ajouter un utilisateur
+  button:
+    edit: Mettre à jour
+    new: Ajouter
+  password: Mot de passe
+  repeatPassword: Répéter le mot de passe
