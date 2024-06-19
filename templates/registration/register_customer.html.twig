@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% form_theme RegistrationCustomerFormType 'bootstrap_5_layout.html.twig' %}
+{% block title %}{% trans %}Register{% endtrans %}{% endblock %}
+
+{% block body %}
+
+    <section class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <h1>{{ block('title') }}</h1>
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+            {{ form_errors(RegistrationCustomerFormType) }}
+
+            {{ form_start(RegistrationCustomerFormType) }}
+                {{ form_row(RegistrationCustomerFormType.firstname) }}
+                {{ form_row(RegistrationCustomerFormType.lastname) }}
+                {{ form_row(RegistrationCustomerFormType.phone) }}
+                {{ form_row(RegistrationCustomerFormType.bithdateAt) }}
+                {{ form_row(RegistrationCustomerFormType.email) }}
+                {{ form_row(RegistrationCustomerFormType.plainPassword) }}
+                {{ form_row(RegistrationCustomerFormType.agreeTerms) }}
+
+                <button type="submit" class="btn btn-success">{% trans %}Register{% endtrans %}</button>
+            {{ form_end(RegistrationCustomerFormType) }}
+
+        </div>
+        <div class="col-lg-4"></div>
+    </section>
+   
+{% endblock %}

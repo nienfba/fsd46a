@@ -2,17 +2,24 @@
 
 namespace App\Entity;
 
+use App\Entity\Admin;
+use App\Entity\Dealer;
+use App\Entity\Customer;
+use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\Traits\TimestampableEntity;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ORM\HasLifecycleCallbacks]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
+#[ORM\DiscriminatorMap(['customer' => Customer::class, 'dealer' => Dealer::class, 'admin' => Admin::class])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
@@ -36,9 +43,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
-
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Customer $customer = null;
 
     #[ORM\Column]
     private bool $isVerified = false;
@@ -116,23 +120,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getCustomer(): ?Customer
-    {
-        return $this->customer;
-    }
-
-    public function setCustomer(Customer $customer): static
-    {
-        // set the owning side of the relation if necessary
-        if ($customer->getUser() !== $this) {
-            $customer->setUser($this);
-        }
-
-        $this->customer = $customer;
-
-        return $this;
     }
 
     public function isVerified(): bool

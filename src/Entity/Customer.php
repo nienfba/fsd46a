@@ -8,13 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
-class Customer
+class Customer extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 100)]
     private ?string $lastname = null;
 
@@ -26,10 +21,6 @@ class Customer
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $bithdateAt = null;
-
-    #[ORM\OneToOne(inversedBy: 'customer', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
 
     /**
      * @var Collection<int, CustomerAddress>
@@ -47,11 +38,6 @@ class Customer
     {
         $this->addresses = new ArrayCollection();
         $this->reviews = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getLastname(): ?string
@@ -98,18 +84,6 @@ class Customer
     public function setBithdateAt(?\DateTimeImmutable $bithdateAt): static
     {
         $this->bithdateAt = $bithdateAt;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): static
-    {
-        $this->user = $user;
 
         return $this;
     }

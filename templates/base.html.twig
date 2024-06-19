@@ -35,12 +35,28 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarAccount" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                <i class="icon-user"></i> {% trans from 'menu' %}My account{% endtrans %}
+                               
+                               
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <img src="{{ app.user.avatar }}" width="50"> Administration
+                                {% elseif is_granted('ROLE_DEALER') %}
+                                    <i class="icon-user"></i> {{ app.user.contactFirstname }} {{ app.user.contactLastname }}
+                                {% else %}
+                                     <i class="icon-user"></i> {{ app.user.firstname }} {{ app.user.lastname }}
+                                {% endif %}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarAccount">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="" class="dropdown-item">{% trans from 'menu' %}My account{% endtrans %}</a></li>
+                                <li><a href="{{ path('app_admin') }}" class="dropdown-item">{% trans from 'menu' %}Administration{% endtrans %}</a></li>
+                                {% elseif is_granted('ROLE_DEALER') %}
+                                <li><a href="" class="dropdown-item">{% trans from 'menu' %}My account{% endtrans %}</a></li>
+                                <li><a href="" class="dropdown-item">{% trans from 'menu' %}Preferences{% endtrans %}</a></li>
+                                {% else %}
                                 <li><a href="" class="dropdown-item">{% trans from 'menu' %}My account{% endtrans %}</a></li>
                                 <li><a href="" class="dropdown-item">{% trans from 'menu' %}My orders{% endtrans %}</a></li>
                                 <li><a href="" class="dropdown-item">{% trans from 'menu' %}My reviews{% endtrans %}</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                         {% else %}
@@ -79,6 +95,7 @@
         </nav>
 
         <main class="container-fluid">
+            
             {% block body %}{% endblock %}
         </main>
 

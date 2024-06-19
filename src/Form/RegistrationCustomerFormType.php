@@ -10,14 +10,21 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class RegistrationFormType extends AbstractType
+class RegistrationCustomerFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('lastname')
+            ->add('firstname')
+            ->add('phone')
+            ->add('bithdateAt', DateType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
@@ -47,16 +54,17 @@ class RegistrationFormType extends AbstractType
                 'required' => true,
                 'first_options'  => ['toggle' => true, 'label' => 'user.password'],
                 'second_options' => ['toggle' => true, 'label' => 'user.repeatPassword'],
+                'translation_domain' => 'admin'
             ])
-            ->add('customer', RegistrationCustomerType::class)
+            
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
-            'translation_domain' => 'admin'
+            'data_class' => User::class
+            
         ]);
     }
 }

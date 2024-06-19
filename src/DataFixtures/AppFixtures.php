@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Tva;
 use App\Entity\User;
+use App\Entity\Admin;
 use App\Entity\Review;
 use DateTimeImmutable;
 use App\Entity\Product;
@@ -19,22 +20,21 @@ class AppFixtures extends Fixture
 {
 
     public function __construct(Private UserPasswordHasherInterface $passwordHasher)
-    {
-        
-    }
+    { }
 
     public function load(ObjectManager $manager): void
     {
         $faker = \Faker\Factory::create('fr_FR');
 
         // Création d'un utilisateur ADMIN
-        $user = new User();
-        $user->setRoles(['ROLE_ADMIN'])
+        $admin = new Admin();
+        $admin->setRoles(['ROLE_ADMIN'])
         ->setEmail('admin@admin.fr')
-        ->setPassword($this->passwordHasher->hashPassword($user,'123456'))
-        ->setVerified(true);
+        ->setPassword($this->passwordHasher->hashPassword($admin,'123456'))
+        ->setVerified(true)
+        ->setAvatar('https://i.pravatar.cc/300');
 
-        $manager->persist($user);
+        $manager->persist($admin);
 
 
         // Création des catégories
@@ -90,19 +90,14 @@ class AppFixtures extends Fixture
             for ($m = 0; $m < random_int(3, 20); $m++) {
 
                 //Create Customer/User for Review
-                $user = new User();
-                // désactivation du hash... fixture trop longue a éxecuter sinon
-                //$user->setEmail($faker->email())->setPassword($this->passwordHasher->hashPassword($user, $faker->password()))->setRoles(['ROLE_CUSTOMER']);
-                $user->setEmail($faker->email())->setPassword($faker->password())->setRoles(['ROLE_CUSTOMER']);
-
-                $manager->persist($user);
 
                 $customer = new Customer();
-                $customer->setFirstname($faker->firstName())
+                $customer
+                    ->setEmail($faker->email())->setPassword($faker->password())->setRoles(['ROLE_CUSTOMER'])
+                    ->setFirstname($faker->firstName())
                     ->setLastname($faker->lastName())
                     ->setBithdateAt(new \DateTimeImmutable($faker->date()))
-                    ->setPhone($faker->phoneNumber())
-                    ->setUser($user);
+                    ->setPhone($faker->phoneNumber());
 
                 $manager->persist($customer);
 
