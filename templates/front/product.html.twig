@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+<article class="row">
+    <div class="col-xl-3 col-sm-4 p-2" data-controller="picture" data-picture-url-value="{{ path('app_front') }}">
+        <div class="row">
+            <div class="col-12">
+        {% if( 'http://' in product.images.0.file or 'https://' in product.images.0.file) %}
+            <img src="{{ product.images.0.file }}" class="img-fluid" alt="{{ product.images.0.name}}" data-picture-target="bigImage">
+        {% else %}
+            <img src=" {{ asset('uploads/photos/'~product.images.0.file) }}" class="img-fluid" data-picture-target="bigImage">
+        {% endif %}
+            </div>
+        {% for image in product.images %}
+            <div class="col-3" style="cursor:pointer">
+                {% if( 'http://' in image.file or 'https://' in image.file) %}
+                <img src="{{ image.file }}" class="img-fluid p-2" data-action="click->picture#resize" alt="{{ image.name}}">
+                {% else %}
+                <img src=" {{ asset('uploads/photos/'~image.file) }}" class="img-fluid" data-action="click->picture#resize">
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="col-xl-9 col-sm-8">
+        <h2>{{ product.name }}</h2>
+        <h3>{{ product.price | format_currency('EUR') }}</h3>
+        <p>{{ product.description }}</p>
+        <form action="{{ path('app_cart_add') }}" method="POST" class="row m-2">
+            <div class="col-md-2">
+                <input type="number" name="qty" value="1" step="1" min="1" max="300" class="form-control">
+            </div>
+            <div class="col-md-10">
+                <input type="hidden" name="id" value="{{ product.id }}">
+                <button type="submit" class="btn btn-success text-center"> + Ajouter au <i class="icon-shopping-cart"></i></button>
+            </div>
+        </form>
+          
+        <h3>{% trans %} Catégories {% endtrans %}</h3>
+        {% for category in product.categories %}
+        <span class="badge bg-secondary">{{ category.name}}</span>
+        {% endfor %}
+    </div>
+    <div class="col-12 p-2">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="review-tab" data-bs-toggle="tab" data-bs-target="#review-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Reviews</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="technique-tab" data-bs-toggle="tab" data-bs-target="#technique-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Fiche technique</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="review-tab-pane" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
+            {% for review in product.reviews %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ review.note }}/5 - {{ review.customer.firstname }} {{ review.customer.lastname }}</h5>
+                        <p>{{ review.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="technique-tab-pane" role="tabpanel" aria-labelledby="technique-tab" tabindex="0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                        </tr>
+                        <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</article>
+{% endblock %}

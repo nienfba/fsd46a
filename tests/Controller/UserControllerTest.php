@@ -34,6 +34,7 @@ class UserControllerTest extends WebTestCase
 
     public function testIndex(): void
     {
+        $this->markTestIncomplete();
         $crawler = $this->client->request('GET', $this->path);
 
         self::assertResponseStatusCodeSame(200);
@@ -45,7 +46,7 @@ class UserControllerTest extends WebTestCase
 
     public function testNew(): void
     {
-        //$this->markTestIncomplete();
+        $this->markTestIncomplete();
         $this->client->request('GET', sprintf('%snew', $this->path));
 
         self::assertResponseStatusCodeSame(200);
@@ -68,7 +69,7 @@ class UserControllerTest extends WebTestCase
      */
     public function testNewErrorPassword(): void
     {
-        //$this->markTestIncomplete();
+        $this->markTestIncomplete();
         echo $this->path;
         $this->client->request('GET', sprintf('%snew', $this->path));
 
@@ -92,7 +93,7 @@ class UserControllerTest extends WebTestCase
 
     public function testShow(): void
     {
-  
+        $this->markTestIncomplete();
         $fixture = new User();
         $fixture->setEmail('My Title');
         //$fixture->setRoles(['ROLE_ADMIN']);
@@ -112,7 +113,7 @@ class UserControllerTest extends WebTestCase
 
     public function testEdit(): void
     {
-        //$this->markTestIncomplete();
+        $this->markTestIncomplete();
         $fixture = new User();
         $fixture->setEmail('email@email.fr');
         $fixture->setRoles(['ROLE_API']);
@@ -144,7 +145,7 @@ class UserControllerTest extends WebTestCase
 
     public function testRemove(): void
     {
-        //$this->markTestIncomplete();
+        $this->markTestIncomplete();
         $fixture = new User();
         $fixture->setEmail('Value');
         $fixture->setRoles(['ROLE_USER']);

@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta name="turbo-refresh-scroll" content="reset">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
         {% endblock %}
@@ -12,6 +13,86 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav class="navbar navbar-expand-lg sticky-top bg-light mb-0">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{{ path('app_front') }}">/PlAyAnDgAmEs</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.get('_route') == 'app_front' %}active{% endif %}" href="{{ path('app_front') }}">{% trans from 'menu' %}Home{% endtrans %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if app.request.get('_route') == 'app_static_page' and app.request.attributes.get('_route_params')['pageName'] == 'presentation' %}active{% endif %}" href="{{ path('app_static_page',{pageName:'presentation'}) }}">{% trans from 'menu' %}Presentation{% endtrans %}</a>
+                        </li>
+    
+                        <li class="nav-item"><a class="nav-link"> | </a></li>
+                        
+                        {% if app.user %} 
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarAccount" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="icon-user"></i> {% trans from 'menu' %}My account{% endtrans %}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarAccount">
+                                <li><a href="" class="dropdown-item">{% trans from 'menu' %}My account{% endtrans %}</a></li>
+                                <li><a href="" class="dropdown-item">{% trans from 'menu' %}My orders{% endtrans %}</a></li>
+                                <li><a href="" class="dropdown-item">{% trans from 'menu' %}My reviews{% endtrans %}</a></li>
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link {% if app.request.get('_route') == 'app_register' %}active{% endif %}" href="{{ path('app_register') }}"><i class="icon-keyboard"></i> {% trans from 'menu' %} Register{% endtrans %}</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link  {% if app.request.get('_route') == 'app_login' %}active{% endif %}" href="{{ path('app_login') }}"><i class="icon-key"></i> {% trans from 'menu' %}Login{% endtrans %}</a>
+                        </li>
+                        {% endif %}
+                        
+                        <li class="nav-item"><a class="nav-link"> | </a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="icon-explore"></i> {% trans from 'menu' %}Language{% endtrans %}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale:'en'})) }}" class="dropdown-item">{% trans from 'menu' %}English{% endtrans %}</a></li>
+                                <li><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale:'fr'})) }}" class="dropdown-item">{% trans from 'menu' %}French{% endtrans %}</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item"><a class="nav-link"> | </a></li>
+                        
+                    
+                        <li class="nav-item">
+                            <a class="nav-link" href="">
+                                <button type="button" class="btn btn-primary position-relative"><i class="icon-shopping-cart"></i> <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" id="cart"></span></button>
+                            </a>
+                        </li>
+                       
+                        
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <main class="container-fluid">
+            {% block body %}{% endblock %}
+        </main>
+
+        <div id="toasts" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">        
+        <!-- displayng toast message with Turbo-->
+        </div>
+
+        <footer class="container-fluid p-4">
+            
+            <nav class="nav navbar-dark text-light">
+                <a class="nav-link text-light" href=" {{ path('app_static_page', {pageName: 'cgv'}) }}">{% trans from 'menu' %}cgv{% endtrans %}</a>
+                <a class="nav-link text-light" href="">{% trans from 'menu' %}mentions{% endtrans %}</a>
+            </nav>
+            <p>Copyright 2024 - Products online</p>
+        </footer>
     </body>
 </html>

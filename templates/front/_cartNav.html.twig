@@ -1,0 +1,23 @@
+<turbo-stream action="update" target="cart">
+    <template>
+        {% if cartQty is defined %}{{ cartQty }}{% else %}0{% endif %}
+    </template>
+</turbo-stream>
+
+<turbo-stream action="update" target="toasts">
+    <template>
+        <div id="liveToast" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto"><i class="icon-shopping-cart"></i> Votre panier</strong>
+                <small>à l'instant</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <p class="text-center">
+                <img src="{{ product.images.0.file }}" class="img-fluid" alt="{{ product.images.0.name }}">
+                <strong>Le produit {{ product.name }} a été ajoutée au panier</strong></p>
+                <p class="text-center"><a href="{{ path('app_cart') }}" class="btn btn-success"><i class="icon-view-show"></i> Voir la panier</a></p>
+            </div>
+        </div>
+    </template>
+</turbo-stream>

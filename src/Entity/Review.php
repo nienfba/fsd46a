@@ -20,6 +20,13 @@ class Review
     #[ORM\Column]
     private ?int $note = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reviews')]
+    private ?Customer $customer = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +52,30 @@ class Review
     public function setNote(int $note): static
     {
         $this->note = $note;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    public function getCustomer(): ?Customer
+    {
+        return $this->customer;
+    }
+
+    public function setCustomer(?Customer $customer): static
+    {
+        $this->customer = $customer;
 
         return $this;
     }

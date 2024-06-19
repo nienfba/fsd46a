@@ -37,9 +37,16 @@ class Customer
     #[ORM\OneToMany(targetEntity: CustomerAddress::class, mappedBy: 'customer', orphanRemoval: true)]
     private Collection $addresses;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'customer')]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +138,36 @@ class Customer
             // set the owning side to null (unless already changed)
             if ($address->getCustomer() === $this) {
                 $address->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getCustomer() === $this) {
+                $review->setCustomer(null);
             }
         }
 

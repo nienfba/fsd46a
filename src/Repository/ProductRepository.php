@@ -16,6 +16,21 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function findByPriceRange($minPrice, $maxPrice): array
+    {
+
+        return $this->createQueryBuilder('p')
+        ->andWhere('p.price > :minPrice')
+        ->andWhere('p.price < :maxPrice')
+        ->setParameter('minPrice', $minPrice)
+        ->setParameter('maxPrice', $maxPrice)
+        ->orderBy('p.price', 'ASC')
+        ->setMaxResults(10)
+        ->getQuery()->getResult();
+
+    }
+
+
     //    /**
     //     * @return Product[] Returns an array of Product objects
     //     */

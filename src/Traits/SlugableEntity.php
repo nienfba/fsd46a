@@ -23,7 +23,7 @@ trait SlugableEntity
         $slugger = new AsciiSlugger();
       
         if (!$this->slug || '-' === $this->slug) {
-            $this->slug = (string) $slugger->slug($this->getSlugField())->lower();
+            $this->slug = (string) $slugger->slug($this->getName())->lower();
         }
     }
 

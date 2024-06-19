@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.supported_locales: 'en|fr'
+    CART_SAVE: "%env(CART_SAVE)%"
 
 services:
     # default configuration for services in *this* file
@@ -19,6 +21,16 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    
+
+    App\Service\CartSession:
+        arguments:
+            $sessionName: '%env(CART_SESSION_NAME)%'
+        public: true
+
+    # Nom du service pour la gestion du panier lors de l'injection de dépendance (Dependency Injection )
+    App\Service\CartInterface: '@App\Service\CartSession'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

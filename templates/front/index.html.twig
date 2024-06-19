@@ -1,20 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FrontController!{% endblock %}
+{% block title %}Welcome{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>F:/_User/Bureau/Laragon/www/3WA-FSD46A/my_project_directory/src/Controller/FrontController.php</code></li>
-        <li>Your template at <code>F:/_User/Bureau/Laragon/www/3WA-FSD46A/my_project_directory/templates/front/index.html.twig</code></li>
-    </ul>
-</div>
+<p data-controller="hello">Coucou</p>
+<section class="row">
+    {% for product in products %}
+    <article class="col-2 p-2">
+        <a href="{{ path('app_front_product', {slug: product.slug }) }}">
+            {% if( 'http://' in product.images.0.file or 'https://' in product.images.0.file) %}
+            <img src="{{ product.images.0.file }}" class="img-fluid">
+            {% else %}
+            <img src=" {{ asset('uploads/photos/'~product.images.0.file) }}" class="img-fluid">
+            {% endif %}
+        </a>
+        <h2>{{ product.name }}</h2>
+        <h3>{{ product.price | format_currency('EUR') }}</h3>
+        <a href="{{ path('app_front_product', {slug: product.slug }) }}" class="btn btn-success""><i class="icon-view-show"></i> Détails</a>
+    </article>
+    {% endfor %}
+</section>
 {% endblock %}
